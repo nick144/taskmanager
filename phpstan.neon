@@ -1,0 +1,9 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app/
+    level: 5
+    # Enable relation discovery via custom Larastan parameter
+    customRulesetUsed: true

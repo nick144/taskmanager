@@ -25,7 +25,7 @@ class TaskController extends Controller
     public function index()
     {
        $user = Auth::user();
-        $tasks = $user->tasks;
+        $tasks = $user->tasks();
 
         $categories = Category::all();
 
@@ -129,10 +129,10 @@ class TaskController extends Controller
     }
 
     // Ensure the task belongs to the current user
-    private function authorizeTask(Task $task)
-    {
-        if ($task->user_id !== Auth::id()) {
-            abort(403);
-        }
-    }
+    // private function authorizeTask(Task $task)
+    // {
+    //     if ($task->user_id !== Auth::id()) {
+    //         abort(403);
+    //     }
+    // }
 }
