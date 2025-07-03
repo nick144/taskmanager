@@ -19,6 +19,15 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/task-manager
-            git pull origin main
+            cd /var/www/taskmanager
+
+            echo "📥 Resetting to latest remote code"
+            git fetch origin
+            git reset --hard origin/main
+            git clean -fd
+
+            echo "🔧 Making deploy.sh executable..."
+            chmod +x deploy.sh
+
+            echo "🚀 Running deploy.sh..."
             ./deploy.sh

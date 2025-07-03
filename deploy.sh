@@ -2,8 +2,9 @@
 
 set -e
 
-APP_DIR="/var/www/task-manager"
+APP_DIR="/var/www/taskmanager"
 CONTAINER_NAME="laravel-app"
+
 
 echo "📁 Changing to app directory: $APP_DIR"
 cd "$APP_DIR"
