@@ -21,10 +21,22 @@ jobs:
           script: |
             cd /var/www/taskmanager
 
+            echo "🔍 Checking for local changes..."
+            git checkout -- .
+
+            echo "🔄 Resetting local changes..."
+            git reset --hard
+
+            echo "📂 Switching to main branch..."
+            git checkout main
+            
+            echo "🧹 Cleaning untracked files..."
+            git clean -fd
+
             echo "📥 Resetting to latest remote code"
             git fetch origin
             git reset --hard origin/main
-            git clean -fd
+            
 
             echo "🔧 Making deploy.sh executable..."
             chmod +x deploy.sh
