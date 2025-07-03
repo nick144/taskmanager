@@ -19,8 +19,8 @@ jobs:
         run : cp .env.production .env
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
-      - name: Run Migrations
-        run: php artisan migrate --force
+      # - name: Run Migrations
+      #   run: php artisan migrate --force
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse
       - name: Run tests
