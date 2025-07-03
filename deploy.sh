@@ -24,6 +24,11 @@ docker-compose up -d --build
 echo "📦 Installing Composer dependencies..."
 docker exec "$CONTAINER_NAME" composer install --no-interaction --prefer-dist --optimize-autoloader
 
+
+docker exec "$CONTAINER_NAME" chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+docker exec "$CONTAINER_NAME" chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
+
 echo "🎹 Running Laravel migrations..."
 docker exec "$CONTAINER_NAME" php artisan migrate --force
 

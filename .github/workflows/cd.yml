@@ -21,6 +21,11 @@ jobs:
           script: |
             cd /var/www/taskmanager
 
+            sudo chown -R $USER:$USER .
+
+            echo "Copying .env.production to .env..."
+            cp -f .env.production .env
+
             echo "🔍 Checking for local changes..."
             git checkout -- .
 

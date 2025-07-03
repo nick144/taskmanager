@@ -13,7 +13,10 @@ RUN apt-get update && apt-get install -y \
     git \
     nano \
     libzip-dev \
-    libpq-dev
+    libpq-dev \
+    iputils-ping \
+    zsh \
+    vim
 
 # PHP Extensions
 RUN docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip
