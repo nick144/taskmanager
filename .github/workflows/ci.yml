@@ -1,0 +1,76 @@
+name: Laravel CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: taskmanger
+          MYSQL_USER: taskuser
+          MYSQL_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+
+        - name: Set up PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: '8.3'
+            extensions: mbstring, bcmath, mysql
+            coverage: none
+
+        - name: Copy .env
+          run : cp .env.production .env
+
+        - name: Install Composer dependencies
+          run: composer install --no-interaction --prefer-dist
+        
+        - name: Run migrations
+          env:
+            DB_CONNECTION: mysql
+            DB_HOST: 127.0.0.1
+            DB_PORT: 3306
+            DB_DATABASE: taskmanger
+            DB_USERNAME: taskuser
+            DB_PASSWORD: secret
+          run: php artisan migrate --force
+        
+        - name: Run PHPStan
+          env:
+            DB_CONNECTION: mysql
+            DB_HOST: 127.0.0.1
+            DB_PORT: 3306
+            DB_DATABASE: taskmanger
+            DB_USERNAME: taskuser
+            DB_PASSWORD: secret
+          run: vendor/bin/phpstan analyse
+        
+        - name: Run tests
+          env:
+            DB_CONNECTION: mysql
+            DB_HOST: 127.0.0.1
+            DB_PORT: 3306
+            DB_DATABASE: taskmanger
+            DB_USERNAME: taskuser
+            DB_PASSWORD: secret
+          run: vendor/bin/phpunit
+        
+        - name: Deploy to server
